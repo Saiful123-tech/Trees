@@ -1,0 +1,13 @@
+TreeNode<int>* takeInput(){
+    int rootData;
+    cin>>rootData;
+    TreeNode<int>* root=new TreeNode<int>(rootData);
+    int n;
+    cout<<"Number of Child"<<rootData<<endl;
+    cin>>n;
+    for(int i=0;i<n;i++){
+        TreeNode<int>* child=takeInput();
+        root->children.push_back(child);
+    }
+    return root;
+}
