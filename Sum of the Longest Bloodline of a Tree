@@ -1,0 +1,81 @@
+My approach
+class Solution
+{
+public:
+    pair<int,int> sumfast(Node *root){
+        if(root==NULL){
+            pair<int,int> p = make_pair(0,0);
+            return p;
+        }
+        pair<int,int> left=sumfast(root->left);
+        pair<int,int> right=sumfast(root->right);
+        pair<int,int> ans;
+        if(left.second>right.second){
+            ans.second=left.second+1;
+            ans.first=left.first+root->data;
+        }
+        else if(left.second==right.second){
+            if(left.first>right.first){
+            ans.second=left.second+1;
+            ans.first=left.first+root->data; 
+            }
+            else{
+               ans.second=right.second+1;
+            ans.first=right.first+root->data;  
+            }
+        }
+        else{
+            ans.second=right.second+1;
+            ans.first=right.first+root->data;  
+        }
+        return ans;
+    }
+    int sumOfLongRootToLeafPath(Node *root)
+    {
+        //code here
+      return  sumfast(root).first;
+    }
+};
+
+
+Approach 2
+class Solution
+{
+public:
+    
+    void solve(Node* root, int sum, int &maxSum, int len, int &maxLen) {
+        //base case
+        if( root == NULL ) {
+            
+            if(len > maxLen) 
+            {
+                maxLen = len;
+                maxSum = sum;
+            }
+            else if(len == maxLen) 
+            {
+                maxSum = max(sum, maxSum);
+            }
+            return;
+        }
+        
+        sum = sum + root->data;
+        
+        solve(root->left, sum, maxSum, len+1, maxLen);
+        solve(root->right, sum, maxSum, len+1, maxLen);
+
+    }
+    
+    int sumOfLongRootToLeafPath(Node *root)
+    {
+        int len = 0;
+        int maxLen = 0;
+        
+        int sum = 0;
+        int maxSum = INT_MIN;
+        
+        solve(root, sum, maxSum, len, maxLen);
+        
+        return maxSum;
+    }
+};
