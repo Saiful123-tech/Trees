@@ -1,0 +1,59 @@
+class Solution {
+public:
+    void leftNode(Node *root,vector<int> &v){
+        if((root==NULL) || (root->left==NULL && root->right==NULL) ){
+                return;
+            }
+        v.push_back(root->data);
+        if(root->left){
+        leftNode(root->left,v);
+        }
+        else{
+            leftNode(root->right,v);
+        }
+    }
+    void RightNode(Node *root,vector<int> &v){
+        if( (root==NULL) || (root->left==NULL && root->right==NULL)){
+                return;
+        }
+        if(root->right){
+        RightNode(root->right,v);
+        }
+        else{
+        RightNode(root->left,v);
+        }
+        v.push_back(root->data);
+    }
+    void leafNode(Node *root,vector<int> &v){
+        if(root==NULL){
+            return;
+        }
+        if(root->left==NULL && root->right==NULL){
+            v.push_back(root->data);
+            return;
+        }
+        leafNode(root->left,v);
+        leafNode(root->right,v);
+    }  
+  
+    vector <int> boundary(Node *root)
+    {
+        //Your code here
+       vector<int> v;
+        if(root==NULL){
+            return v;
+        }
+        v.push_back(root->data);
+        leftNode(root->left,v);
+        // left subtree
+        leafNode(root->left,v);
+        // right subtree
+        leafNode(root->right,v);
+       // Right traverse
+        RightNode(root->right,v);
+        
+        return v; 
+     
+        
+    }
+};
