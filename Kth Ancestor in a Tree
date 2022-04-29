@@ -1,0 +1,86 @@
+void solve(Node *root,int k,int node,vector<int> v,int &ans){
+    if(root==NULL){
+        return;
+    }
+    v.push_back(root->data);
+    solve(root->left,k,node,v,ans);
+    solve(root->right,k,node,v,ans);
+    if(root->data==node){
+        int c=0;
+        for(int i=v.size()-1;i>=0;i--){
+           if(c==k){
+               ans=v[i];
+           }
+           c++;
+    }
+    v.pop_back();
+    }
+}
+int kthAncestor(Node *root, int k, int node)
+{
+    // Code here
+    vector<int> v;
+    int ans=0;
+    solve(root,k,node,v,ans);
+    if(ans!=0){
+        return ans;
+    }
+    return -1;
+}
+Approach2 2
+void solve(Node *root,int k,int node,vector<int> v,int &ans){
+    if(root==NULL){
+        return;
+    }
+    v.push_back(root->data);
+    solve(root->left,k,node,v,ans);
+    solve(root->right,k,node,v,ans);
+    if(root->data==node){
+        int c=0;
+        for(int i=v.size()-1;i>=0;i--){
+           if(c==k){
+               ans=v[i];
+           }
+           c++;
+    }
+    v.pop_back();
+    }
+}
+Node* solve2(Node* root,int &k,int node){
+    if(root==NULL){
+        return NULL;
+    }
+    if(root->data==node){
+        return root;
+    }
+    Node* leftans=solve2(root->left,k,node);
+    Node* rightans=solve2(root->right,k,node);
+    if(leftans!=NULL && rightans==NULL){
+        k--;
+        if(k==0){
+            k=INT_MAX;
+            return root;
+        }
+        return leftans;
+    }
+    else if(leftans==NULL && rightans!=NULL){
+        k--;
+        if(k==0){
+            k=INT_MAX;
+            return root;
+        }
+        return rightans;
+    }
+    return NULL;
+}
+int kthAncestor(Node *root, int k, int node)
+{
+    
+    Node* ans=solve2(root,k,node);
+    if(ans==NULL || ans->data==node){
+        return -1;
+    }
+    else{
+    return ans->data;
+    }
+}
