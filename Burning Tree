@@ -1,0 +1,97 @@
+class Solution {
+  public:
+  Node* createParent(Node* root,int target,map<Node*,Node*> &NodeToParent){
+      if(root==NULL){
+          return NULL;
+      }
+      Node *find=NULL;
+      queue<Node*> q;
+      q.push(root);
+      NodeToParent[root]=NULL;
+      while(!q.empty()){
+          Node* frontNode=q.front();
+          q.pop();
+          if(frontNode->left){
+              q.push(frontNode->left);
+              NodeToParent[frontNode->left]=frontNode;
+          }
+          if(frontNode->right){
+              q.push(frontNode->right);
+              NodeToParent[frontNode->right]=frontNode;
+          }
+          if(frontNode->data==target){
+              find=frontNode;
+          }
+      }
+      return find;
+  }
+  int BurningTree(Node* root,map<Node*,Node*> &NodeToParent){
+      int ans=0;
+      map<Node*,bool> visited;
+      queue<Node*> q;
+      q.push(root);
+      visited[root]=true;
+      while(!q.empty()){
+          int size=q.size();
+          bool flag=false;
+          for(int i=0;i<size;i++){
+              Node* front=q.front();
+              q.pop();
+              if(front->left && !visited[front->left]){
+                  q.push(front->left);
+                  visited[front->left]=true;
+                  flag=true;
+              }
+              if(front->right && !visited[front->right]){
+                  q.push(front->right);
+                  visited[front->right]=true;
+                  flag=true;
+              }
+              if(NodeToParent[front] && !visited[NodeToParent[front]]){
+                  q.push(NodeToParent[front]);
+                  visited[NodeToParent[front]]=true;
+                  flag=true;
+              }
+          }
+          if(flag==true){
+              ans=ans+1;
+          }
+      }
+      return ans;
+  }
+    int minTime(Node* root, int target) 
+    {
+        // Your code goes here
+        map<Node*,Node*> NodeToParent;
+        Node *targetNode =createParent(root,target,NodeToParent);
+        return BurningTree(targetNode,NodeToParent);
+    }
+};
+
+// { Driver Code Starts.
+
+int main() 
+{
+    int tc;
+    scanf("%d ", &tc);
+    while (tc--) 
+    {    
+        string treeString;
+        getline(cin, treeString);
+        // cout<<treeString<<"\n";
+        int target;
+        cin>>target;
+        // cout<<target<<"\n";
+
+        Node *root = buildTree(treeString);
+        Solution obj;
+        cout<<obj.minTime(root, target)<<"\n"; 
+
+        cin.ignore();
+
+    }
+
+
+    return 0;
+}
+  // } Driver Code Ends
