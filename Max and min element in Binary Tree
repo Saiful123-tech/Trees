@@ -1,0 +1,24 @@
+class Solution
+{
+public:
+    int findMax(Node *root)
+    {
+        //code here
+        if(root==NULL){
+            return INT_MIN;
+        }
+        int leftans=findMax(root->left);
+        int rightans=findMax(root->right);
+        return max(root->data,max(leftans,rightans));
+    }
+    int findMin(Node *root)
+    {
+        //code here
+         if(root==NULL){
+            return INT_MAX;
+        }
+        int leftans=findMin(root->left);
+        int rightans=findMin(root->right);
+        return min(root->data,min(leftans,rightans));
+    }
+};
