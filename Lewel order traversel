@@ -25,3 +25,7 @@ class Solution
       }
       return v;
     }
+    
+    Averagr Case
+    Tc O(N)
+    SC O(W) w = width
